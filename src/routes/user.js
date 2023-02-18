@@ -1,27 +1,33 @@
 const router = require("express").Router();
+const bcrypt = require("bcrypt");
 const User = require("../models/User");
 
 router.post("/", async (req, res) => {
-  const { name, email, cpf, password } = req.body;
+  const { name, email, cpf, password, confirmPassword } = req.body;
+  const salt = await bcrypt.genSalt(12);
+  const passUser = await bcrypt.hash(password, salt);
+  const userAlreadyExists = await User.findOne({ email: email });
+
+  if (userAlreadyExists) {
+    return res
+      .status(422)
+      .json({ message: "Este E-mail já está cadastrado !" });
+  }
 
   const user = {
     name,
     email,
     cpf,
     role: "User",
-    password,
+    password: passUser,
     created_at: new Date(),
   };
 
-  // ERRO AO TENTAR CRIAR UM USUÁRIO SEM DADOS
-  if (!email) {
-    return res.status(422).json({ message: "Preencha todos os campos !" });
-  }
-
   try {
     await User.create(user);
-
-    return res.status(201).json({ message: "Usuário criado com sucesso !" });
+    return res
+      .status(200)
+      .json({ message: "Usuário Criado com sucesso !", user });
   } catch (err) {
     return res.status(500).json({ message: "Erro ao criar um novo usuário !" });
   }

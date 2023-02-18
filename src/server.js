@@ -29,7 +29,7 @@ mongoose
     `mongodb+srv://${user_DB}:${pass_DB}@cluster0.ttf8hkh.mongodb.net/${name_DB}?retryWrites=true&w=majority`
   )
   .then(() => {
-    console.log("CONEXÃO EFETUADA COM SUCESSO !");
+    console.log("Connection made successfully !");
     app.listen(port, () => console.log(`Server is running on port ${port}`));
   })
   .catch((err) => console.log(err));
