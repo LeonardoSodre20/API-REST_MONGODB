@@ -68,6 +68,7 @@ router.put("/:id", async (req, res) => {
     name,
     email,
     cpf,
+    updated_at: new Date(),
   };
 
   try {

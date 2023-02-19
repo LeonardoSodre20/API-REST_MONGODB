@@ -10,6 +10,7 @@ const User = mongoose.model("User", {
   confirmPassword: String,
   role: String,
   created_at: Date,
+  updated_at: Date,
 });
 
 module.exports = User;

@@ -20,8 +20,10 @@ app.use(
 
 const userRoutes = require("./routes/user");
 const authRoutes = require("./routes/auth");
+const productRoutes = require("./routes/product");
 
 app.use("/users", userRoutes);
 app.use("/auth", authRoutes);
+app.use("/product", productRoutes);
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));
