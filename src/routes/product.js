@@ -12,6 +12,10 @@ router.post("/", async (req, res) => {
     created_at: new Date(),
   };
 
+  if (!name) {
+    return res.status(422).json({ message: "O campo nome é obrigatório !" });
+  }
+
   try {
     await Product.create(product);
     return res
@@ -34,6 +38,39 @@ router.get("/", async (req, res) => {
     return res
       .status(500)
       .json({ message: "Não foi possível listar os produtos !" });
+  }
+});
+
+router.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { name, weight, status, price } = req.body;
+
+  const product = {
+    name,
+    weight,
+    status,
+    price,
+    update_at: new Date(),
+  };
+
+  try {
+    await Product.findByIdAndUpdate(id, product);
+    return res
+      .status(200)
+      .json({ message: "Produto atualizado com sucesso !", product });
+  } catch (err) {
+    return res.status(500).json({ message: "Erro ao atualizar o produto !" });
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await Product.findByIdAndDelete(id);
+    return res.status(200).json({ message: "Produto deletado com sucesso !" });
+  } catch (err) {
+    return res.status(500).json({ message: "Erro ao deletar o produto !" });
   }
 });
 

@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const User = require("../models/User");
 
 router.post("/", async (req, res) => {
-  const { name, email, cpf, password, confirmPassword } = req.body;
+  const { name, email, lastname, password, confirmPassword } = req.body;
   const salt = await bcrypt.genSalt(12);
   const passUser = await bcrypt.hash(password, salt);
   const userAlreadyExists = await User.findOne({ email: email });
@@ -17,9 +17,10 @@ router.post("/", async (req, res) => {
   const user = {
     name,
     email,
-    cpf,
+    lastname,
     role: "User",
     password: passUser,
+    confirmPassword: passUser,
     created_at: new Date(),
   };
 
