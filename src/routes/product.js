@@ -1,12 +1,14 @@
 const router = require("express").Router();
+const multer = require("multer");
+const multerConfig = require("../database/multer");
 const Product = require("../models/Products");
 
 router.post("/", async (req, res) => {
-  const { name, weight, status, price } = req.body;
+  const { name, amount, status, price } = req.body;
 
   const product = {
     name,
-    weight,
+    amount,
     status,
     price,
     created_at: new Date(),
@@ -43,11 +45,11 @@ router.get("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
-  const { name, weight, status, price } = req.body;
+  const { name, amount, status, price } = req.body;
 
   const product = {
     name,
-    weight,
+    amount,
     status,
     price,
     update_at: new Date(),

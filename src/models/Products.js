@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Product = mongoose.model("Product", {
   name: String,
-  weight: Number,
+  amount: Number,
   status: String,
   price: Number,
   created_at: Date,
