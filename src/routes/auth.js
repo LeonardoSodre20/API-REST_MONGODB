@@ -6,6 +6,10 @@ const User = require("../models/User");
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   const userExist = await User.findOne({ email: email });
+  const name = userExist.name;
+  const lastname = userExist.lastname;
+  const role = userExist.role;
+  const emailUser = userExist.email;
 
   if (!userExist) {
     return res.status(404).json({ message: "Usuário não encontrado !" });
@@ -27,9 +31,14 @@ router.post("/login", async (req, res) => {
       secretKey
     );
 
-    return res
-      .status(200)
-      .json({ message: "Autenticação realizado com sucesso !", token });
+    return res.status(200).json({
+      message: "Autenticação realizado com sucesso !",
+      name,
+      lastname,
+      role,
+      emailUser,
+      token,
+    });
   } catch {
     return res
       .status(500)
