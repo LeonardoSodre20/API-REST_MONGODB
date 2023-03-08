@@ -1,6 +1,4 @@
 const router = require("express").Router();
-const multer = require("multer");
-const multerConfig = require("../database/multer");
 const Product = require("../models/Products");
 
 router.post("/", async (req, res) => {
@@ -31,11 +29,17 @@ router.post("/", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
+  const { search, pageSize } = req.query;
+
   try {
-    const products = await Product.find();
-    return res
-      .status(200)
-      .json({ message: "Produtos listados com sucesso !", products });
+    const products = await Product.find({
+      name: search,
+    }).limit(pageSize);
+
+    return res.status(200).json({
+      message: "Produtos listados com sucesso !",
+      products,
+    });
   } catch (err) {
     return res
       .status(500)

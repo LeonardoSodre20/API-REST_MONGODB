@@ -18,7 +18,7 @@ router.post("/", async (req, res) => {
     name,
     email,
     lastname,
-    role: "Admin",
+    role: "User",
     password: passUser,
     confirmPassword: passUser,
     created_at: new Date(),
