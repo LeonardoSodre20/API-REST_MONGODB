@@ -1,4 +1,6 @@
+const { query } = require("express");
 const mongoose = require("mongoose");
+
 const { Schema } = mongoose;
 
 const productSchema = new Schema({

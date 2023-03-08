@@ -32,14 +32,22 @@ router.get("/", async (req, res) => {
   const { search, pageSize } = req.query;
 
   try {
-    const products = await Product.find({
-      name: search,
-    }).limit(pageSize);
+    if (search === "") {
+      const products = await Product.find().limit(pageSize);
+      return res.status(200).json({
+        message: "Produtos listados com sucesso !",
+        products,
+      });
+    } else {
+      const products = await Product.find({
+        name: search,
+      }).limit(pageSize);
 
-    return res.status(200).json({
-      message: "Produtos listados com sucesso !",
-      products,
-    });
+      return res.status(200).json({
+        message: "Produtos listados com sucesso !",
+        products,
+      });
+    }
   } catch (err) {
     return res
       .status(500)
