@@ -32,6 +32,7 @@ router.get("/", async (req, res) => {
   const { search, pageSize } = req.query;
 
   try {
+    // VERIFICAÇÂO DE A QUERY SEARCH ESTÀ VAZIA , CASO ESTEJA , A LISTAGEM É FEITA DE FORMA AUTOMÁTICA
     if (search === "") {
       const products = await Product.find().limit(pageSize);
       return res.status(200).json({
