@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { productsFilter } = require("../factories/productsFilter");
 const Product = require("../models/Products");
 
 router.post("/", async (req, res) => {
@@ -40,13 +41,12 @@ router.get("/", async (req, res) => {
         products,
       });
     } else {
-      const products = await Product.find({
-        name: search,
-      }).limit(pageSize);
+      const products = await Product.find().limit(pageSize);
+      const productWithFilter = productsFilter(products, search);
 
       return res.status(200).json({
         message: "Produtos listados com sucesso !",
-        products,
+        productWithFilter,
       });
     }
   } catch (err) {
