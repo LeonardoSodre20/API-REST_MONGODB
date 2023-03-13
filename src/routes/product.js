@@ -1,5 +1,6 @@
 const router = require("express").Router();
-const { productsFilter } = require("../factories/productsFilter");
+const multer = require("multer");
+const storage = require("../conifg/multer");
 const Product = require("../models/Products");
 
 router.post("/", async (req, res) => {
@@ -41,12 +42,13 @@ router.get("/", async (req, res) => {
         products,
       });
     } else {
-      const products = await Product.find().limit(pageSize);
-      const productWithFilter = productsFilter(products, search);
+      const products = await Product.find({
+        name: search,
+      }).limit(pageSize);
 
       return res.status(200).json({
         message: "Produtos listados com sucesso !",
-        productWithFilter,
+        products,
       });
     }
   } catch (err) {
@@ -87,6 +89,14 @@ router.delete("/:id", async (req, res) => {
   } catch (err) {
     return res.status(500).json({ message: "Erro ao deletar o produto !" });
   }
+});
+
+// UPLOADS
+
+const upload = multer({ storage: storage });
+
+router.post("/upload", upload.single(`file`), (req, res) => {
+  return res.json(req.file.filename);
 });
 
 module.exports = router;
